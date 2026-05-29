@@ -1,10 +1,10 @@
 .venv/
 __pycache__/
-*.pt
-*.onnx
-*.json
-*.mp4
-*.mp3
-*.wav
 .env
 .ipynb_checkpoints/
+
+# GitHub has a strict 100MB limit per file.
+# These two specific JSON datasets exceed 150MB+ and must be ignored.
+# All other JSON files, scripts, and media files will be pushed.
+03_dataset_preprocessing/results/candidates_full.json
+03_dataset_preprocessing/results/candidates_pruned.json

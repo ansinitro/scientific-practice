@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kazakh Speech-to-Text Model Evaluation Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #090b11;
+            --bg-card: rgba(20, 26, 46, 0.6);
+            --border-card: rgba(255, 255, 255, 0.08);
+            
+            /* Model Accent Colors */
+            --color-fastconformer: #06b6d4;      /* Cyan */
+            --color-quartznet: #f97316;          /* Orange */
+            --color-soyle: #10b981;              /* Emerald Green */
+            --color-whisper: #d946ef;            /* Fuchsia */
+            
+            --text-main: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            
+            --glow-fastconformer: rgba(6, 182, 212, 0.2);
+            --glow-quartznet: rgba(249, 115, 22, 0.2);
+            --glow-soyle: rgba(16, 185, 129, 0.2);
+            --glow-whisper: rgba(217, 70, 239, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(217, 70, 239, 0.05) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        /* Glassmorphism scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Layout Structure */
+        .app-container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        aside {
+            background: rgba(13, 17, 30, 0.85);
+            border-right: 1px solid var(--border-card);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            backdrop-filter: blur(20px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        .brand-name h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-name p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        /* Playlist / Video Selector */
+        .playlist {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .play-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .play-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .play-item.active {
+            background: rgba(79, 172, 254, 0.1);
+            border-color: rgba(79, 172, 254, 0.4);
+            box-shadow: inset 0 0 10px rgba(79, 172, 254, 0.1);
+        }
+
+        .play-item-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .play-item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+        }
+
+        .badge {
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .badge-pure {
+            background: rgba(6, 182, 212, 0.15);
+            color: #22d3ee;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .badge-shala {
+            background: rgba(249, 115, 22, 0.15);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        .play-item-duration {
+            color: var(--text-muted);
+        }
+
+        /* System Context Card */
+        .system-info {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .system-info-title {
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .system-info-item {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+        }
+
+        .system-info-value {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Main Workspace Styling */
+        main {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        /* Top Row grid */
+        .top-row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 24px;
+        }
+
+        /* Glassmorphic Cards */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Video Container */
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Metrics grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            height: 100%;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        /* Model borders */
+        .metric-card.fastconformer::before { background: var(--color-fastconformer); }
+        .metric-card.quartznet::before { background: var(--color-quartznet); }
+        .metric-card.soyle::before { background: var(--color-soyle); }
+        .metric-card.whisper::before { background: var(--color-whisper); }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .metric-model-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .model-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .dot-fastconformer { background: var(--color-fastconformer); box-shadow: 0 0 8px var(--color-fastconformer); }
+        .dot-quartznet { background: var(--color-quartznet); box-shadow: 0 0 8px var(--color-quartznet); }
+        .dot-soyle { background: var(--color-soyle); box-shadow: 0 0 8px var(--color-soyle); }
+        .dot-whisper { background: var(--color-whisper); box-shadow: 0 0 8px var(--color-whisper); }
+
+        .metric-stats {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .metric-val-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .metric-value.highlight {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .fastconformer-text { color: var(--color-fastconformer); }
+        .quartznet-text { color: var(--color-quartznet); }
+        .soyle-text { color: var(--color-soyle); }
+        .whisper-text { color: var(--color-whisper); }
+
+        /* Speed visual progress bar */
+        .speed-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .speed-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+        .speed-bar-fill.fastconformer { background: var(--color-fastconformer); }
+        .speed-bar-fill.quartznet { background: var(--color-quartznet); }
+        .speed-bar-fill.soyle { background: var(--color-soyle); }
+        .speed-bar-fill.whisper { background: var(--color-whisper); }
+
+        /* Karaoke Subtitle Live Comparator Grid */
+        .subtitles-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .subtitle-card {
+            background: rgba(15, 19, 35, 0.8);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 130px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .subtitle-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+        }
+        .subtitle-card.fastconformer::after { background: var(--color-fastconformer); }
+        .subtitle-card.quartznet::after { background: var(--color-quartznet); }
+        .subtitle-card.soyle::after { background: var(--color-soyle); }
+        .subtitle-card.whisper::after { background: var(--color-whisper); }
+
+        .subtitle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 8px;
+        }
+
+        /* Karaoke Rolling Window Container */
+        .subtitle-display-box {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rolling-subtitle {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.4;
+        }
+
+        .sub-word {
+            opacity: 0.35;
+            transform: scale(0.9);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+            color: var(--text-secondary);
+        }
+
+        .sub-word.active {
+            opacity: 1;
+            font-weight: 800;
+            transform: scale(1.15);
+        }
+
+        .sub-word.active.active-fastconformer {
+            color: var(--color-fastconformer);
+            text-shadow: 0 0 12px var(--glow-fastconformer);
+        }
+        .sub-word.active.active-quartznet {
+            color: var(--color-quartznet);
+            text-shadow: 0 0 12px var(--glow-quartznet);
+        }
+        .sub-word.active.active-soyle {
+            color: var(--color-soyle);
+            text-shadow: 0 0 12px var(--glow-soyle);
+        }
+        .sub-word.active.active-whisper {
+            color: var(--color-whisper);
+            text-shadow: 0 0 12px var(--glow-whisper);
+        }
+
+        .no-speech-state {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        /* Tabs Panel for Full Transcripts & Side-by-Side Matrix */
+        .transcript-tabs-card {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tab-headers {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: 1px solid transparent;
+            padding: 8px 16px;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn.active.fastconformer { border-bottom: 2px solid var(--color-fastconformer); }
+        .tab-btn.active.quartznet { border-bottom: 2px solid var(--color-quartznet); }
+        .tab-btn.active.soyle { border-bottom: 2px solid var(--color-soyle); }
+        .tab-btn.active.whisper { border-bottom: 2px solid var(--color-whisper); }
+        .tab-btn.active.matrix { border-bottom: 2px solid #3b82f6; }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactive Transcript Text */
+        .transcript-text-container {
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            scroll-behavior: smooth;
+        }
+
+        .transcript-word {
+            display: inline-block;
+            cursor: pointer;
+            padding: 2px 4px;
+            margin: 0 1px;
+            border-radius: 4px;
+            transition: all 0.15s ease;
+            color: var(--text-secondary);
+        }
+
+        .transcript-word:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+        }
+
+        .transcript-word.active-word {
+            color: #000;
+            font-weight: 700;
+        }
+        .transcript-word.active-word.bg-fastconformer { background: var(--color-fastconformer); box-shadow: 0 0 10px var(--glow-fastconformer); }
+        .transcript-word.active-word.bg-quartznet { background: var(--color-quartznet); box-shadow: 0 0 10px var(--glow-quartznet); }
+        .transcript-word.active-word.bg-soyle { background: var(--color-soyle); box-shadow: 0 0 10px var(--glow-soyle); }
+        .transcript-word.active-word.bg-whisper { background: var(--color-whisper); box-shadow: 0 0 10px var(--glow-whisper); }
+
+        /* Comparative Matrix Styling */
+        .matrix-container {
+            overflow-x: auto;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .matrix-table th {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.75rem;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .matrix-table td {
+            padding: 16px;
+            vertical-align: top;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            line-height: 1.6;
+        }
+
+        .matrix-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .matrix-cell-content {
+            max-height: 150px;
+            overflow-y: auto;
+            color: var(--text-secondary);
+        }
+
+        .matrix-active-row td {
+            background: rgba(59, 130, 246, 0.03) !important;
+        }
+
+        .matrix-segment-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            cursor: pointer;
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .matrix-segment-time:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+        }
+
+        /* Hint / Tooltip */
+        .interactive-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .hint-icon {
+            display: inline-flex;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.65rem;
+        }
+
+        /* CSS for the comparative matrix highlighted text */
+        .matrix-diff-word {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border-bottom: 1px dashed #ef4444;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside>
+            <div class="brand">
+                <div class="brand-logo">KZ</div>
+                <div class="brand-name">
+                    <h1>STT Compare</h1>
+                    <p>Kazakh Speech Recognition</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="section-title">Test Datasets</h3>
+                <div class="playlist" id="video-playlist">
+                    <!-- Dynamic Video Items Load Here -->
+                </div>
+            </div>
+
+            <!-- Hardware Context Card -->
+            <div class="system-info">
+                <div class="system-info-title">
+                    <span class="hint-icon" style="background:#4facfe;color:#000;">i</span>
+                    Evaluation Context
+                </div>
+                <div class="system-info-item">
+                    <span>GPU Device</span>
+                    <span class="system-info-value">RTX 2060 6GB</span>
+                </div>
+                <div class="system-info-item">
+                    <span>CPU Device</span>
+                    <span class="system-info-value">i5-9400 CPU</span>
+                </div>
+                <div class="system-info-item">
+                    <span>OS Platform</span>
+                    <span class="system-info-value">Linux (Ubuntu)</span>
+                </div>
+                <div class="system-info-item">
+                    <span>Precision</span>
+                    <span class="system-info-value">Float16 / ONNX GPU</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Workspace -->
+        <main>
+            <!-- Top Section: Video & Performance Metrics -->
+            <div class="top-row">
+                <!-- Video Card -->
+                <div class="glass-card">
+                    <div class="video-container">
+                        <video id="stt-video-player" controls preload="auto">
+                            <!-- Source is loaded dynamically -->
+                        </video>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h2 id="current-video-title" style="font-family:'Outfit', sans-serif; font-size:1.15rem; font-weight:700;">Loading...</h2>
+                        <div class="interactive-hint">
+                            <span class="hint-icon">?</span> Click any word in the transcript below to jump video playhead
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Metrics Card -->
+                <div class="glass-card">
+                    <h3 style="font-family:'Outfit', sans-serif; font-size:1.05rem; font-weight:700; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                        Execution Metrics
+                    </h3>
+                    <div class="metrics-grid" id="metrics-container">
+                        <!-- 4 Model Metric Cards Loaded Here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Section: Side-by-Side Karaoke Subtitle Comparator -->
+            <div class="subtitles-row" id="subtitles-container">
+                <!-- FastConformer Subtitle -->
+                <div class="subtitle-card fastconformer">
+                    <div class="subtitle-header">
+                        <span>FastConformer</span>
+                        <span class="fastconformer-text">RNNT/CTC Large</span>
+                    </div>
+                    <div class="subtitle-display-box">
+                        <div class="rolling-subtitle" id="sub-fastconformer">
+                            <span class="no-speech-state">Waiting for playback...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QuartzNet Subtitle -->
+                <div class="subtitle-card quartznet">
+                    <div class="subtitle-header">
+                        <span>QuartzNet</span>
+                        <span class="quartznet-text">CTC 15x5</span>
+                    </div>
+                    <div class="subtitle-display-box">
+                        <div class="rolling-subtitle" id="sub-quartznet">
+                            <span class="no-speech-state">Waiting for playback...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soyle Subtitle -->
+                <div class="subtitle-card soyle">
+                    <div class="subtitle-header">
+                        <span>Soyle ONNX</span>
+                        <span class="soyle-text">Seq2Seq ONNX</span>
+                    </div>
+                    <div class="subtitle-display-box">
+                        <div class="rolling-subtitle" id="sub-soyle">
+                            <span class="no-speech-state">Waiting for playback...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Whisper-Turbo Subtitle -->
+                <div class="subtitle-card whisper">
+                    <div class="subtitle-header">
+                        <span>Whisper-Turbo</span>
+                        <span class="whisper-text">Transformer Turbo</span>
+                    </div>
+                    <div class="subtitle-display-box">
+                        <div class="rolling-subtitle" id="sub-whisper-turbo">
+                            <span class="no-speech-state">Waiting for playback...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Interactive Transcripts & Alignment Matrix -->
+            <div class="glass-card transcript-tabs-card">
+                <div class="tab-headers">
+                    <button class="tab-btn active fastconformer" onclick="switchTab('tab-fastconformer', this, 'fastconformer')">
+                        <span class="model-dot dot-fastconformer"></span> FastConformer
+                    </button>
+                    <button class="tab-btn quartznet" onclick="switchTab('tab-quartznet', this, 'quartznet')">
+                        <span class="model-dot dot-quartznet"></span> QuartzNet
+                    </button>
+                    <button class="tab-btn soyle" onclick="switchTab('tab-soyle', this, 'soyle')">
+                        <span class="model-dot dot-soyle"></span> Soyle ONNX
+                    </button>
+                    <button class="tab-btn whisper" onclick="switchTab('tab-whisper-turbo', this, 'whisper')">
+                        <span class="model-dot dot-whisper"></span> Whisper-Turbo
+                    </button>
+                    <button class="tab-btn matrix" onclick="switchTab('tab-matrix', this, 'matrix')">
+                        Alignment Matrix
+                    </button>
+                </div>
+
+                <!-- Tab Contents -->
+                <div id="tab-fastconformer" class="tab-content active">
+                    <div class="transcript-text-container" id="text-fastconformer"></div>
+                </div>
+
+                <div id="tab-quartznet" class="tab-content">
+                    <div class="transcript-text-container" id="text-quartznet"></div>
+                </div>
+
+                <div id="tab-soyle" class="tab-content">
+                    <div class="transcript-text-container" id="text-soyle"></div>
+                </div>
+
+                <div id="tab-whisper-turbo" class="tab-content">
+                    <div class="transcript-text-container" id="text-whisper-turbo"></div>
+                </div>
+
+                <!-- Alignment Matrix (Segment Comparison) -->
+                <div id="tab-matrix" class="tab-content">
+                    <div class="matrix-container">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 100px;">Time Range</th>
+                                    <th>FastConformer</th>
+                                    <th>QuartzNet</th>
+                                    <th>Soyle ONNX</th>
+                                    <th>Whisper-Turbo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matrix-tbody">
+                                <!-- Loaded dynamically based on Whisper timestamps -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Aligned Data -->
+    <script src="results_aligned.js"></script>
+    <script>
+        // DOM Elements
+        const player = document.getElementById('stt-video-player');
+        const playlistContainer = document.getElementById('video-playlist');
+        const videoTitle = document.getElementById('current-video-title');
+        const metricsContainer = document.getElementById('metrics-container');
+        const matrixTbody = document.getElementById('matrix-tbody');
+
+        let currentData = null;
+        const models = ['fastconformer', 'quartznet', 'soyle', 'whisper-turbo'];
+        const modelDisplayNames = {
+            'fastconformer': 'FastConformer',
+            'quartznet': 'QuartzNet',
+            'soyle': 'Soyle ONNX',
+            'whisper-turbo': 'Whisper-Turbo'
+        };
+        const modelClasses = {
+            'fastconformer': 'fastconformer',
+            'quartznet': 'quartznet',
+            'soyle': 'soyle',
+            'whisper-turbo': 'whisper'
+        };
+
+        // Initialize Application
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof ALIGNED_DATA === 'undefined') {
+                console.error("ALIGNED_DATA not found. Make sure results_aligned.js is loaded.");
+                return;
+            }
+            
+            renderPlaylist();
+            loadVideo(ALIGNED_DATA[0]); // Load first video by default
+            
+            // Add timeupdate listener for subtitles synchronization
+            player.addEventListener('timeupdate', handleTimeUpdate);
+        });
+
+        // Render Playlist in sidebar
+        function renderPlaylist() {
+            playlistContainer.innerHTML = '';
+            ALIGNED_DATA.forEach((video, index) => {
+                const item = document.createElement('div');
+                item.className = 'play-item' + (index === 0 ? ' active' : '');
+                item.onclick = () => {
+                    document.querySelectorAll('.play-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    loadVideo(video);
+                };
+
+                const cleanName = video.audio.replace('.mp3', '').replace(/_/g, ' ');
+                const isShala = video.dataset === 'shala_audio';
+                const datasetBadge = isShala 
+                    ? `<span class="badge badge-shala">Shala Kazakh</span>` 
+                    : `<span class="badge badge-pure">Pure Kazakh</span>`;
+
+                item.innerHTML = `
+                    <div class="play-item-title" title="${video.audio}">${cleanName}</div>
+                    <div class="play-item-meta">
+                        ${datasetBadge}
+                        <span class="play-item-duration">${video.duration.toFixed(1)}s</span>
+                    </div>
+                `;
+                playlistContainer.appendChild(item);
+            });
+        }
+
+        // Load chosen video data
+        function loadVideo(videoData) {
+            currentData = videoData;
+            
+            // Set Player Source (resolving path relative to project structure)
+            // If running inside 02_models_test directory, video path is relative to it
+            player.src = videoData.video;
+            
+            // Set Title
+            const cleanName = videoData.audio.replace('.mp3', '').replace(/_/g, ' ');
+            videoTitle.textContent = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+            
+            // Render performance metrics
+            renderMetrics(videoData);
+            
+            // Render full interactive transcripts
+            renderTranscripts(videoData);
+            
+            // Render comparative matrix
+            renderMatrix(videoData);
+            
+            // Reset subtitles
+            resetSubtitles();
+        }
+
+        // Render Metric cards
+        function renderMetrics(videoData) {
+            metricsContainer.innerHTML = '';
+            
+            // Determine max speedup to scale progress bars relative to the fastest model
+            let maxSpeedup = 0;
+            models.forEach(model => {
+                const mData = videoData.models[model];
+                if (mData.rtf) {
+                    const speedup = 1 / mData.rtf;
+                    if (speedup > maxSpeedup) maxSpeedup = speedup;
+                }
+            });
+
+            models.forEach(model => {
+                const mData = videoData.models[model];
+                const speedup = mData.rtf ? (1 / mData.rtf) : 0;
+                const percent = maxSpeedup > 0 ? (speedup / maxSpeedup) * 100 : 0;
+                
+                const card = document.createElement('div');
+                card.className = `metric-card ${modelClasses[model]}`;
+                
+                card.innerHTML = `
+                    <div class="metric-model-name">
+                        <span class="model-dot dot-${modelClasses[model]}"></span>
+                        ${modelDisplayNames[model]}
+                    </div>
+                    <div class="metric-stats">
+                        <div class="metric-val-group">
+                            <span class="metric-label">RTF</span>
+                            <span class="metric-value">${mData.rtf ? mData.rtf.toFixed(4) : 'N/A'}</span>
+                        </div>
+                        <div class="metric-val-group">
+                            <span class="metric-label">Processing Time</span>
+                            <span class="metric-value">${mData.processing_time ? mData.processing_time.toFixed(3) + 's' : 'N/A'}</span>
+                        </div>
+                        <div class="metric-val-group" style="margin-top: 4px;">
+                            <span class="metric-label" style="font-weight:700;">Speed Ratio</span>
+                            <span class="metric-value highlight ${modelClasses[model]}-text">${speedup.toFixed(1)}x</span>
+                        </div>
+                        <div style="font-size:0.65rem; color:var(--text-muted); text-align:right; margin-top:-2px;">
+                            faster than real-time
+                        </div>
+                        <div class="speed-bar">
+                            <div class="speed-bar-fill ${modelClasses[model]}" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+                metricsContainer.appendChild(card);
+            });
+        }
+
+        // Render full clickable transcripts
+        function renderTranscripts(videoData) {
+            models.forEach(model => {
+                const container = document.getElementById(`text-${model}`);
+                container.innerHTML = '';
+                
+                const mData = videoData.models[model];
+                if (!mData.words || mData.words.length === 0) {
+                    container.innerHTML = `<span class="no-speech-state">No transcription text generated for this model.</span>`;
+                    return;
+                }
+
+                mData.words.forEach((wordObj, idx) => {
+                    const span = document.createElement('span');
+                    span.className = 'transcript-word';
+                    span.textContent = wordObj.text;
+                    span.dataset.start = wordObj.start;
+                    span.dataset.end = wordObj.end;
+                    span.dataset.index = idx;
+                    span.onclick = () => {
+                        player.currentTime = wordObj.start + 0.05; // Slightly offset to ensure word hits active window
+                        player.play();
+                    };
+                    container.appendChild(span);
+                    container.appendChild(document.createTextNode(' '));
+                });
+            });
+        }
+
+        // Render Side-by-Side Comparison Matrix
+        function renderMatrix(videoData) {
+            matrixTbody.innerHTML = '';
+            
+            // We'll align sentences using Whisper segments as the reference timeline grid
+            const whisperData = videoData.models['whisper-turbo'];
+            if (!whisperData.segments || whisperData.segments.length === 0) {
+                matrixTbody.innerHTML = `<tr><td colspan="5" class="no-speech-state" style="text-align:center;">No segments available for comparison.</td></tr>`;
+                return;
+            }
+
+            whisperData.segments.forEach(refSegment => {
+                const tr = document.createElement('tr');
+                tr.dataset.start = refSegment.start;
+                tr.dataset.end = refSegment.end;
+                
+                // Seek to segment start on row click
+                const timeCell = document.createElement('td');
+                timeCell.innerHTML = `
+                    <span class="matrix-segment-time" onclick="player.currentTime = ${refSegment.start}; player.play();">
+                        ${refSegment.start.toFixed(1)}s - ${refSegment.end.toFixed(1)}s
+                    </span>
+                `;
+                tr.appendChild(timeCell);
+                
+                // Get corresponding texts for each model in this time range
+                models.forEach(model => {
+                    const td = document.createElement('td');
+                    const mData = videoData.models[model];
+                    
+                    // Filter words falling into this time range
+                    const segmentWords = mData.words
+                        .filter(w => w.start >= refSegment.start - 0.5 && w.start <= refSegment.end + 0.5)
+                        .map(w => w.text);
+                        
+                    const segmentText = segmentWords.length > 0 ? segmentWords.join(' ') : '...';
+                    
+                    td.innerHTML = `<div class="matrix-cell-content">${segmentText}</div>`;
+                    tr.appendChild(td);
+                });
+                
+                matrixTbody.appendChild(tr);
+            });
+        }
+
+        // Reset subtitles displays
+        function resetSubtitles() {
+            models.forEach(model => {
+                const subBox = document.getElementById(`sub-${model === 'whisper-turbo' ? 'whisper-turbo' : model}`);
+                if (subBox) {
+                    subBox.innerHTML = `<span class="no-speech-state">Waiting for playback...</span>`;
+                }
+            });
+        }
+
+        // Switch Active Transcript Tab
+        function switchTab(tabId, btn, modelKey) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            // Deactivate all buttons
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.className = b.className.split(' ').filter(c => c !== 'active').join(' ');
+            });
+            
+            // Show active tab
+            document.getElementById(tabId).classList.add('active');
+            // Activate clicked button
+            btn.classList.add('active');
+        }
+
+        // Handle Video Time Updates (Main Loop)
+        function handleTimeUpdate() {
+            if (!currentData) return;
+            const time = player.currentTime;
+            
+            // 1. Update Karaoke Subtitle Windows
+            models.forEach(model => {
+                const mData = currentData.models[model];
+                const displayBox = document.getElementById(`sub-${model === 'whisper-turbo' ? 'whisper-turbo' : model}`);
+                if (!displayBox) return;
+                
+                if (!mData.words || mData.words.length === 0) {
+                    displayBox.innerHTML = `<span class="no-speech-state">No speech detected</span>`;
+                    return;
+                }
+                
+                // Find index of the currently active word
+                const activeIdx = mData.words.findIndex(w => time >= w.start && time <= w.end);
+                
+                if (activeIdx !== -1) {
+                    // Gather a rolling window: 3 words before, active word, and 3 words after
+                    const startRange = Math.max(0, activeIdx - 3);
+                    const endRange = Math.min(mData.words.length, activeIdx + 4);
+                    
+                    let html = '';
+                    for (let i = startRange; i < endRange; i++) {
+                        const word = mData.words[i];
+                        const isActive = i === activeIdx;
+                        const activeClass = isActive ? `active active-${modelClasses[model]}` : '';
+                        html += `<span class="sub-word ${activeClass}">${word.text}</span> `;
+                    }
+                    displayBox.innerHTML = `<div class="rolling-subtitle">${html}</div>`;
+                } else {
+                    // Check if time is between words, show the closest next word faded
+                    const nextWord = mData.words.find(w => w.start > time);
+                    if (nextWord) {
+                        const idx = mData.words.indexOf(nextWord);
+                        const startRange = Math.max(0, idx - 1);
+                        const endRange = Math.min(mData.words.length, idx + 4);
+                        
+                        let html = '';
+                        for (let i = startRange; i < endRange; i++) {
+                            html += `<span class="sub-word">${mData.words[i].text}</span> `;
+                        }
+                        displayBox.innerHTML = `<div class="rolling-subtitle" style="opacity: 0.65;">${html}</div>`;
+                    } else {
+                        displayBox.innerHTML = `<span class="no-speech-state">...</span>`;
+                    }
+                }
+            });
+            
+            // 2. Highlight words in Full Transcript Containers and auto-scroll
+            models.forEach(model => {
+                const container = document.getElementById(`text-${model}`);
+                if (!container) return;
+                
+                const words = container.querySelectorAll('.transcript-word');
+                const mData = currentData.models[model];
+                
+                let activeWordEl = null;
+                
+                words.forEach(wordEl => {
+                    const start = parseFloat(wordEl.dataset.start);
+                    const end = parseFloat(wordEl.dataset.end);
+                    const isActive = time >= start && time <= end;
+                    
+                    const mClass = modelClasses[model];
+                    wordEl.classList.remove('active-word', 'bg-fastconformer', 'bg-quartznet', 'bg-soyle', 'bg-whisper');
+                    
+                    if (isActive) {
+                        wordEl.classList.add('active-word', `bg-${mClass}`);
+                        activeWordEl = wordEl;
+                    }
+                });
+                
+                // Auto-scroll inside the container to keep active word in center
+                if (activeWordEl) {
+                    const parent = container;
+                    const parentHeight = parent.clientHeight;
+                    const wordTop = activeWordEl.offsetTop;
+                    const wordHeight = activeWordEl.clientHeight;
+                    
+                    // Center the active word inside scroll container
+                    parent.scrollTop = wordTop - (parentHeight / 2) + (wordHeight / 2);
+                }
+            });
+            
+            // 3. Highlight Row in Alignment Matrix Table
+            const rows = matrixTbody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const start = parseFloat(row.dataset.start);
+                const end = parseFloat(row.dataset.end);
+                
+                row.classList.remove('matrix-active-row');
+                if (time >= start && time <= end) {
+                    row.classList.add('matrix-active-row');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
