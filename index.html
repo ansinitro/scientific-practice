@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kazakh Speech Technologies | Scientific Practice Defense</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Scientific Practice Defense Portal for Kazakh Speech Recognition and Flow Matching Text-to-Speech deployment.">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand-section">
+                <div class="brand-badge">K</div>
+                <div class="brand-meta">
+                    <h1>SpeechTech</h1>
+                    <p>Scientific Practice Defense</p>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-section-title">Defense Hub</div>
+                <button class="nav-item active" data-view="dashboard">
+                    <span class="nav-item-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    </span>
+                    Dashboard & Progress
+                </button>
+                
+                <div class="nav-section-title">Task Repositories</div>
+                <button class="nav-item" data-view="stt-registry">
+                    <span class="nav-item-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                    </span>
+                    1. STT Model Pool
+                </button>
+                
+                <button class="nav-item" data-view="stt-benchmark">
+                    <span class="nav-item-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </span>
+                    2. Speech Benchmarking
+                </button>
+                
+                <button class="nav-item" data-view="filler-explorer">
+                    <span class="nav-item-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4c0-.5.2-1 .6-1.4C5 2.2 5.5 2 6 2h8l6 6v12c0 .5-.2 1-.6 1.4-.4.4-.9.6-1.4.6H6c-.5 0-1-.2-1.4-.6-.4-.4-.6-.9-.6-1.4Z"></path><path d="M14 2v6h6"></path><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path></svg>
+                    </span>
+                    3. Filler Data Explorer
+                </button>
+                
+                <button class="nav-item" data-view="tts-showcase">
+                    <span class="nav-item-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5v14M22 9v6M7 8v8M2 10v4"></svg>
+                    </span>
+                    4 & 5. TTS Showcase
+                </button>
+            </nav>
+            
+            <div class="sidebar-context">
+                <div class="context-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    Practice Meta
+                </div>
+                <div class="context-row">
+                    <span>Supervisor:</span>
+                    <span class="context-val">Senior Researcher</span>
+                </div>
+                <div class="context-row">
+                    <span>AITU:</span>
+                    <span class="context-val">Defense Portal</span>
+                </div>
+                <div class="context-row">
+                    <span>Language:</span>
+                    <span class="context-val" style="color:#60a5fa;">English / Kazakh</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Workspace Viewport -->
+        <main class="workspace">
+            
+            <!-- VIEW: DASHBOARD (OVERVIEW) -->
+            <section class="view-section active" id="view-dashboard">
+                <div class="view-header">
+                    <h2>Scientific Practice Dashboard</h2>
+                    <p>Empirical timeline, core system achievements, and task progress breakdown for Kazakh Speech Technologies.</p>
+                </div>
+                
+                <div class="grid-3">
+                    <div class="glass-card stat-box">
+                        <div class="stat-num">5 / 5</div>
+                        <div class="stat-lbl">Tasks Completed</div>
+                    </div>
+                    <div class="glass-card stat-box">
+                        <div class="stat-num">408K</div>
+                        <div class="stat-lbl">Filler Speech Samples</div>
+                    </div>
+                    <div class="glass-card stat-box">
+                        <div class="stat-num">0.05</div>
+                        <div class="stat-lbl">Best Model RTF (Soyle)</div>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <!-- Research Task Accomplishments Timeline -->
+                    <div class="glass-card">
+                        <h3 style="font-family:'Outfit'; font-size:1.15rem; margin-bottom:18px; color:var(--text-main);">Research Task Progression</h3>
+                        <div class="timeline-container">
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-dot active">✓</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-week">Task 1</span>
+                                        <span class="timeline-status">Done</span>
+                                    </div>
+                                    <h4 class="timeline-title">STT Model Exploration</h4>
+                                    <p class="timeline-desc">Cataloged 5 state-of-the-art ASR models supporting Kazakh. Evaluated structural differences, parameter scales, and licenses to choose candidates for local testing.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-dot active">✓</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-week">Task 2</span>
+                                        <span class="timeline-status">Done</span>
+                                    </div>
+                                    <h4 class="timeline-title">Local STT Testing & Benchmarking</h4>
+                                    <p class="timeline-desc">Implemented a benchmark harness. Calculated RTF (Real-Time Factor) and character offsets across formal Pure-Kazakh and colloquial Shala-Kazakh speech datasets.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-dot active">✓</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-week">Task 3</span>
+                                        <span class="timeline-status">Done</span>
+                                    </div>
+                                    <h4 class="timeline-title">Filler Preprocessing Pipeline</h4>
+                                    <p class="timeline-desc">Analyzed the MFA speech dataset of 408,010 samples. Extracted, tokenized, and classified discourse fillers, expressive interjections, and non-speech sounds.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-dot active">✓</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-week">Task 4</span>
+                                        <span class="timeline-status">Done</span>
+                                    </div>
+                                    <h4 class="timeline-title">TTS Flow Matching Research</h4>
+                                    <p class="timeline-desc">Researched F5-TTS / Tote-TTS architecture. Mapped modern diffusion transformer pipelines to substitute traditional autoregressive speech synthesis.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-dot active">✓</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-header">
+                                        <span class="timeline-week">Task 5</span>
+                                        <span class="timeline-status">Done</span>
+                                    </div>
+                                    <h4 class="timeline-title">Low-Latency TTS Engine Deployment</h4>
+                                    <p class="timeline-desc">Integrated optimized ONNX models with Piper TTS. Successfully generated highly natural Kazakh speech synthesis under 50ms start-latency.</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <!-- Research Context & Summary -->
+                    <div class="glass-card" style="display:flex; flex-direction:column; gap:20px;">
+                        <div>
+                            <h3 style="font-family:'Outfit'; font-size:1.15rem; margin-bottom:12px; color:var(--text-main);">Abstract & Core Defense Rationale</h3>
+                            <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">
+                                This defense portal represents the empirical milestones achieved during the scientific practice in <strong>Kazakh Speech Technologies</strong>. The research explores two critical vectors:
+                            </p>
+                            <ul style="font-size:0.82rem; color:var(--text-secondary); padding-left:18px; display:flex; flex-direction:column; gap:8px;">
+                                <li><strong>Colloquial Robustness:</strong> Benchmarking ASR models on <em>Shala-Kazakh</em> code-switching dialects, revealing a 15-20% average drop in WER compared to pure literary speech.</li>
+                                <li><strong>Computational Optimization:</strong> Transitioning speech synthesis from autoregressive giants to high-efficiency ONNX runtime architectures, achieving low-latency deployment.</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background:rgba(255, 255, 255, 0.015); border:1px solid rgba(255, 255, 255, 0.04); border-radius:12px; padding:16px;">
+                            <h4 style="font-family:'Outfit'; font-size:0.9rem; margin-bottom:6px; color:#10b981; display:flex; align-items:center; gap:8px;">
+                                <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
+                                Key Scientific Outputs
+                            </h4>
+                            <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.5;">
+                                Developed a robust filler-cleaning pipeline for acoustic speech corpora. The resulting cleaned lexicons are ready to be packaged directly into custom TTS datasets (e.g. VibeVoice).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- VIEW: TASK 1 (STT REGISTRY) -->
+            <section class="view-section" id="view-stt-registry">
+                <div class="view-header">
+                    <h2>Task 1: STT Candidates Pool</h2>
+                    <p>Searchable index of investigated Automatic Speech Recognition (ASR) candidates. WER values evaluated locally.</p>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="search-bar-container">
+                        <input type="text" id="model-search" class="search-input" placeholder="Search models by name, architecture, dataset...">
+                    </div>
+                    
+                    <div class="custom-table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Model Name</th>
+                                    <th>Architecture</th>
+                                    <th>Parameters</th>
+                                    <th>Training Corpus</th>
+                                    <th>WER (Pure / Shala)</th>
+                                    <th>License</th>
+                                    <th>Practical Findings</th>
+                                </tr>
+                            </thead>
+                            <tbody id="model-pool-tbody">
+                                <!-- Dynamic entries rendered via app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Comparative Cards Grid -->
+                <div class="compare-cards-container">
+                    
+                    <div class="compare-card fastconformer">
+                        <span class="compare-card-title">FastConformer Kazakh</span>
+                        <div class="compare-stat-row">
+                            <span class="compare-stat-lbl">WER Pure:</span>
+                            <span class="compare-stat-val" style="color:#00f2fe;">9.2%</span>
+                        </div>
+                        <div class="compare-stat-row">
+                            <span class="compare-stat-lbl">Inference:</span>
+                            <span class="compare-stat-val">Fast CPU</span>
+                        </div>
+                    </div>
+                    
+                    <div class="compare-card quartznet">
+                        <span class="compare-card-title">QuartzNet Kazakh</span>
+                        <div class="compare-stat-row">
+                            <span class="compare-stat-lbl">WER Pure:</span>
+                            <span class="compare-stat-val" style="color:#f97316;">16.8%</span>
+                        </div>
+                        <div class="compare-stat-row">
+                            <span class="compare-stat-lbl">Inference:</span>
+                            <span class="compare-stat-val">Ultra-Lightweight</span>
+                        </div>
+                    </div>
+                    
+                    <div class="compare-card soyle">
+                        <span class="compare-card-title">Soyle Kazakh Speech</span>
+                        <div class="compare-stat-row">
+                            <span class="compare-stat-lbl">WER Shala:</span>
+                            <span class="compare-stat-val" style="color:#10b981;">19.8%</span>
+                        </div>
+                        <div class="compare-stat-row">
+                            <span class="compare-stat-lbl">Inference:</span>
+                            <span class="compare-stat-val">Custom ONNX Seq2Seq</span>
+                        </div>
+                    </div>
+                    
+                    <div class="compare-card whisper">
+                        <span class="compare-card-title">Whisper-large-v3</span>
+                        <div class="compare-stat-row">
+                            <span class="compare-stat-lbl">WER Pure:</span>
+                            <span class="compare-stat-val" style="color:#d946ef;">4.8%</span>
+                        </div>
+                        <div class="compare-stat-row">
+                            <span class="compare-stat-lbl">Inference:</span>
+                            <span class="compare-stat-val">Heavy (GPU)</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+            
+            <!-- VIEW: TASK 2 (STT KARAOKE BENCHMARK) -->
+            <section class="view-section" id="view-stt-benchmark">
+                <div class="view-header">
+                    <h2>Task 2: Interactive Speech Benchmarking</h2>
+                    <p>Live synchronized subtitle comparison of model outputs on Pure and Shala-Kazakh speech. Select a sample, play the video, and click individual words to navigate playhead.</p>
+                </div>
+                
+                <div class="grid-2">
+                    <!-- Left: Video Playlist and Player -->
+                    <div style="display:flex; flex-direction:column; gap:20px;">
+                        <div class="glass-card">
+                            <h3 style="font-family:'Outfit'; font-size:1rem; margin-bottom:12px; color:var(--text-main);">Speech Sample Library</h3>
+                            <div class="eval-playlist" id="stt-playlist">
+                                <!-- Playlist loaded via app.js -->
+                            </div>
+                        </div>
+                        
+                        <div class="eval-video-frame">
+                            <video id="stt-video-player" controls preload="auto"></video>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Live Subtitle Comparators -->
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <div class="glass-card">
+                            <h3 style="font-family:'Outfit'; font-size:1rem; margin-bottom:6px; color:var(--text-main);">Real-Time Execution Speed</h3>
+                            <div id="stt-metrics-grid" class="mini-metric-grid">
+                                <!-- Micro execution metric cards loaded via app.js -->
+                            </div>
+                        </div>
+                        
+                        <div class="eval-subtitle-grid">
+                            
+                            <div class="eval-subtitle-card fastconformer">
+                                <div class="eval-subtitle-header">
+                                    <span style="color:#00f2fe;">FastConformer</span>
+                                    <span>CTC</span>
+                                </div>
+                                <div class="eval-subtitle-content" id="sub-fastconformer">
+                                    <span class="empty">Waiting for playback...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="eval-subtitle-card quartznet">
+                                <div class="eval-subtitle-header">
+                                    <span style="color:#f97316;">QuartzNet</span>
+                                    <span>CTC</span>
+                                </div>
+                                <div class="eval-subtitle-content" id="sub-quartznet">
+                                    <span class="empty">Waiting for playback...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="eval-subtitle-card soyle">
+                                <div class="eval-subtitle-header">
+                                    <span style="color:#10b981;">Soyle ONNX</span>
+                                    <span>Seq2Seq</span>
+                                </div>
+                                <div class="eval-subtitle-content" id="sub-soyle">
+                                    <span class="empty">Waiting for playback...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="eval-subtitle-card whisper">
+                                <div class="eval-subtitle-header">
+                                    <span style="color:#d946ef;">Whisper-Turbo</span>
+                                    <span>Transformer</span>
+                                </div>
+                                <div class="eval-subtitle-content" id="sub-whisper">
+                                    <span class="empty">Waiting for playback...</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom Aligned Segment Matrix -->
+                <div class="glass-card">
+                    <h3 style="font-family:'Outfit'; font-size:1.1rem; margin-bottom:14px; color:var(--text-main);">Alignment Matrix (Comparative Segments)</h3>
+                    <div class="custom-table-container" style="max-height:220px; overflow-y:auto;">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:110px;">Time Range</th>
+                                    <th>FastConformer</th>
+                                    <th>QuartzNet</th>
+                                    <th>Soyle ONNX</th>
+                                    <th>Whisper-Turbo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stt-matrix-tbody">
+                                <!-- Dynamic segment rows rendered via app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- VIEW: TASK 3 (FILLER EXPLORER) -->
+            <section class="view-section" id="view-filler-explorer">
+                <div class="view-header">
+                    <h2>Task 3: Filler Dataset Explorer</h2>
+                    <p>Empirical breakdown of the 408,010-sample speech dataset. Cleaned and classified lexical items ready for downstream TTS preprocessing.</p>
+                </div>
+                
+                <div class="grid-2">
+                    <!-- Explorer and details -->
+                    <div class="glass-card">
+                        <h3 style="font-family:'Outfit'; font-size:1.1rem; margin-bottom:12px; color:var(--text-main);">Interactive Token Classification</h3>
+                        <div class="filler-pills-container">
+                            <span class="filler-pill active" onclick="selectFillerCategory('discourse', this)">Discourse Fillers</span>
+                            <span class="filler-pill" onclick="selectFillerCategory('expressive', this)">Expressive Interjections</span>
+                            <span class="filler-pill" onclick="selectFillerCategory('non_lexical', this)">Non-Lexical Hesitations</span>
+                        </div>
+                        
+                        <div id="filler-word-list" style="display:flex; flex-direction:column; gap:10px; max-height:400px; overflow-y:auto; padding-right:6px;">
+                            <!-- Filler list loaded via app.js -->
+                        </div>
+                    </div>
+                    
+                    <div style="display:flex; flex-direction:column; gap:20px;">
+                        <div class="glass-card">
+                            <h3 style="font-family:'Outfit'; font-size:1.15rem; margin-bottom:12px; color:var(--text-main);">Pruning Summary Metrics</h3>
+                            <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6; margin-bottom:16px;">
+                                Speech alignment algorithms are highly sensitive to fillers. Extracted tokens have been classified into formal discourse particles, lexical emotional interjections, and vocalized delays.
+                            </p>
+                            
+                            <div class="grid-2" style="grid-template-columns:1fr 1fr; gap:14px; margin-bottom:8px;">
+                                <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:12px; text-align:center;">
+                                    <div style="font-family:'JetBrains Mono'; font-weight:700; font-size:1.4rem; color:#10b981;">37,013</div>
+                                    <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">Total Discourse Fillers</div>
+                                </div>
+                                <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:12px; text-align:center;">
+                                    <div style="font-family:'JetBrains Mono'; font-weight:700; font-size:1.4rem; color:#d946ef;">4,942</div>
+                                    <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">Expressive Interjections</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-card">
+                            <h3 style="font-family:'Outfit'; font-size:1.1rem; margin-bottom:12px; color:var(--text-main);">Pipeline Verification</h3>
+                            <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5;">
+                                <strong>Automatic Word Pruning:</strong> Automatically discarded 49 highly frequent closed-class standard words (e.g. <em>'мен', 'бұл', 'біз', 'он'</em>) to prevent lexical corruption. Discovered 107 non-lexical hesitations requiring soundfile manual reviews.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- VIEW: TASK 4 & 5 (TTS ARCHITECTURE & SHOWCASE) -->
+            <section class="view-section" id="view-tts-showcase">
+                <div class="view-header">
+                    <h2>Tasks 4 & 5: TTS Architectural Showcase & Playground</h2>
+                    <p>Research findings on Flow Matching Synthesis pipelines and real-time ONNX low-latency deployed voices.</p>
+                </div>
+                
+                <div class="grid-2">
+                    <!-- Left: Task 4 Flow Matching Diagram -->
+                    <div class="glass-card">
+                        <h3 style="font-family:'Outfit'; font-size:1.15rem; margin-bottom:14px; color:var(--text-main);">Task 4: Flow Matching Pipeline Architecture</h3>
+                        <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.5; margin-bottom:20px;">
+                            Flow matching (F5-TTS, Tote-TTS) represents the state-of-the-art alternative to autoregressive architectures. It uses ODE solvers to continuously match the speech probability density flow.
+                        </p>
+                        
+                        <div class="diagram-container">
+                            <div class="diagram-node">
+                                <div class="diagram-node-title">Text Input & Phonemizer</div>
+                                <div class="diagram-node-desc">Normalizes Kazakh orthography and punctuation into discrete IPA phoneme representations.</div>
+                            </div>
+                            
+                            <div class="diagram-arrow"></div>
+                            
+                            <div class="diagram-node" style="border-color:#34d399;">
+                                <div class="diagram-node-title" style="color:#34d399;">Continuous Flow Matcher</div>
+                                <div class="diagram-node-desc">Ordinary Differential Equation (ODE) framework matching probability distribution trajectories.</div>
+                            </div>
+                            
+                            <div class="diagram-arrow"></div>
+                            
+                            <div class="diagram-node" style="border-color:#d946ef;">
+                                <div class="diagram-node-title" style="color:#d946ef;">ONNX / HiFi-GAN Vocoder</div>
+                                <div class="diagram-node-desc">Decodes matched vector fields into clean 24kHz synthesized speech wave outputs.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Task 5 Piper ONNX Showcase Playground -->
+                    <div class="glass-card">
+                        <h3 style="font-family:'Outfit'; font-size:1.15rem; margin-bottom:12px; color:var(--text-main);">Task 5: Low-Latency Synthesis Playground</h3>
+                        <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.5; margin-bottom:18px;">
+                            Play synthesized voice outputs generated by the locally optimized Kazakh ONNX voice models. Deployed using Piper TTS engine to guarantee sub-50ms execution delay.
+                        </p>
+                        
+                        <div class="tts-playlist" id="tts-samples-list">
+                            <!-- Custom Waveform player widgets loaded via app.js -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        
+    </div>
+
+    <!-- Include aligned JSON structure data -->
+    <script src="02_models_test/results_aligned.js"></script>
+    <!-- Include central app controller -->
+    <script src="app.js"></script>
+</body>
+</html>
