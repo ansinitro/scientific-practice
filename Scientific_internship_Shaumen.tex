@@ -1,0 +1,185 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{ifxetex}
+\ifxetex
+  \usepackage{fontspec}
+  \setmainfont{Liberation Serif}
+\else
+  \usepackage[utf8]{inputenc}
+  \usepackage[T2A]{fontenc}
+\fi
+\usepackage[russian,english]{babel}
+\usepackage{geometry}
+\geometry{left=20mm,right=15mm,top=20mm,bottom=20mm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{tabularx}
+\usepackage{graphicx}
+
+\begin{document}
+
+% Title Page (Page 1)
+\thispagestyle{empty}
+
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+\textbf{УТВЕРЖДАЮ}\\[2mm]
+Проректор по науке и инновациям\\
+ТОО «Astana IT University»\\[5mm]
+\underline{\hspace{3cm}} Ф.И.О.\\[2mm]
+\underline{\hspace{3cm}} подпись\\[2mm]
+«\underline{\hspace{1cm}}» \underline{\hspace{3cm}} 2026 г.
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\textbf{УТВЕРЖДАЮ}\\[2mm]
+\underline{\hspace{5cm}}\\
+{\footnotesize должностное лицо принимающей организации}\\
+ЧК «SHAI Ltd.»\\
+{\footnotesize наименование принимающей организации}\\[5mm]
+\underline{\hspace{3cm}} Ф.И.О.\\[2mm]
+\underline{\hspace{3cm}} подпись\\[2mm]
+«\underline{\hspace{1cm}}» \underline{\hspace{3cm}} 2026 г.
+\end{minipage}
+
+\vspace{2.5cm}
+
+\begin{center}
+\textbf{\large Программа научной стажировки магистранта}\\[5mm]
+\textbf{\large Shaumen Angsar Askhatuly}
+\end{center}
+
+\vspace{1.5cm}
+
+\noindent
+\textbf{Образовательная программа:} 7M06108 Applied Artificial Intelligence\\[2mm]
+\textbf{Год обучения:} 1 курс, 2025-2026\\[2mm]
+\textbf{Тема магистерской диссертации:} «Noise Filtering Methods for Stefan Problem Datasets»\\[2mm]
+\textbf{Научный руководитель:} Қасабек Самат Абдихамитұлы\\[2mm]
+\textbf{Место прохождения научной стажировки:} ЧК «SHAI Ltd.», г. Астана, Казахстан\\[2mm]
+\textbf{Период прохождения стажировки:} 16.05.2026 -- 30.05.2026
+
+\vfill
+\begin{center}
+Астана, 2026
+\end{center}
+
+\newpage
+
+% Page 2
+\noindent\textbf{Содержание программы стажировки:}\\[2mm]
+\textbf{I. Образовательный компонент}
+\begin{enumerate}
+    \item \textbf{Тема 1:} Изучение state-of-the-art архитектур систем распознавания речи (ASR) для казахского языка (FastConformer, QuartzNet, Whisper, Soyle).
+    \item \textbf{Тема 2:} Подходы к обработке речи с переключением кодов (code-switching, Shala-Kazakh) и оценке метрик качества распознавания (WER, RTF).
+    \item \textbf{Тема 3:} Анализ и предварительная обработка акустических речевых корпусов: токенизация, классификация и извлечение слов-паразитов (discourse fillers, interjections) для подготовки качественных датасетов.
+    \item \textbf{Тема 4:} Изучение современных Flow Matching архитектур для синтеза речи (F5-TTS, Tote-TTS), заменяющих авторегрессионные методы.
+    \item \textbf{Тема 5:} Методы оптимизации и развертывания low-latency TTS моделей на базе ONNX runtime (Piper TTS).
+\end{enumerate}
+
+\vspace{3mm}
+\noindent\textbf{II. Научный компонент}
+\begin{enumerate}
+    \item \textbf{Работа 1:} Бенчмаркинг и оценка локальных STT моделей на формальной (Pure-Kazakh) и разговорной (Shala-Kazakh) речи.
+    \item \textbf{Работа 2:} Разработка пайплайна предварительной очистки и классификации слов-паразитов из датасета MFA (408 010 сэмплов).
+    \item \textbf{Работа 3:} Исследование Flow Matching пайплайна (текст $\rightarrow$ фонемайзер $\rightarrow$ Continuous Flow Matcher $\rightarrow$ ONNX/HiFi-GAN).
+    \item \textbf{Работа 4:} Развертывание оптимизированных ONNX-моделей для синтеза казахской речи с низкой задержкой (менее 50мс).
+\end{enumerate}
+
+\vspace{5mm}
+\noindent\textbf{Понедельный план стажировки}
+
+\vspace{2mm}
+\begin{tabularx}{\textwidth}{|l|l|X|l|}
+\hline
+\textbf{Дата} & \textbf{Время} & \textbf{Наименование работ} & \textbf{Ответственный} \\
+\hline
+16.05 -- 22.05 & 10:00-18:00 & Исследование STT архитектур и бенчмаркинг моделей распознавания речи & Senior Researcher \\
+\hline
+25.05 -- 30.05 & 10:00-18:00 & Обработка датасета слов-паразитов и развертывание low-latency TTS & Senior Researcher \\
+\hline
+\end{tabularx}
+
+\vspace{1cm}
+\noindent СОГЛАСОВАНО:\\[3mm]
+Научный руководитель: \underline{\hspace{4cm}} Қасабек С. А.\\[5mm]
+Научный руководитель с организации: \underline{\hspace{4cm}} Senior Researcher\\[5mm]
+Директор школы ОП: \underline{\hspace{4cm}} Сергазиев М. Ж.\\[5mm]
+
+\noindent ТОО «Astana IT University»\\[2mm]
+Школа искусственного интеллекта и науки о данных
+
+\vspace{5mm}
+\noindent\textbf{УТВЕРЖДАЮ}\\[2mm]
+Директор Школы искусственного интеллекта и науки о данных\\[5mm]
+\underline{\hspace{4cm}} Сергазиев М. Ж.\\[5mm]
+«\underline{\hspace{1cm}}» \underline{\hspace{3cm}} 2026 г.\\[5mm]
+Обсуждено на заседании протокол № \underline{\hspace{2cm}}\\[2mm]
+от «\underline{\hspace{1cm}}» \underline{\hspace{3cm}} 2026 г.
+
+\newpage
+
+% Page 3
+\begin{center}
+\textbf{ОТЧЕТ}\\[2mm]
+\textbf{О НАУЧНОЙ СТАЖИРОВКЕ}
+\end{center}
+
+\vspace{5mm}
+
+\noindent \textbf{Магистрант:} Shaumen Angsar Askhatuly, AAI-2501M\\[2mm]
+\textbf{Образовательная программа:} Applied Artificial Intelligence\\[2mm]
+\textbf{Срок обучения по программе магистратуры:} с «01» 09 2025г. по «30» 06 2027г.\\[2mm]
+\textbf{Год обучения:} 1 курс, 2025-2026\\[2mm]
+\textbf{Тема магистерской диссертации:} Noise Filtering Methods for Stefan Problem Datasets\\[2mm]
+\textbf{Научный руководитель:} Қасабек Самат Абдихамитұлы\\[2mm]
+\textbf{Место прохождения научной стажировки (организация, страна, город):}\\
+ЧК «SHAI Ltd.», Казахстан, Астана\\[2mm]
+\textbf{Период прохождения стажировки:} с «16» 05 2026г. по «30» 05 2026г.
+
+\vspace{5mm}
+\begin{center}
+Астана, 2026
+\end{center}
+
+\vspace{5mm}
+\begin{center}
+\textbf{Отчет о научной стажировке}
+\end{center}
+
+\noindent \textbf{1. Виды выполненных работ в соответствии с планом научной стажировки, значимость полученных результатов}
+
+\vspace{2mm}
+\noindent
+\begin{tabularx}{\textwidth}{|c|X|X|}
+\hline
+\textbf{№ п/п} & \textbf{Наименование работ} & \textbf{Полученные результаты} \\
+\hline
+1 & Исследование STT Model Exploration и пула кандидатов & Каталогизировано 5 ASR моделей. Проведен бенчмаркинг на Shala-Kazakh, лучшая модель -- Soyle (RTF 0.05). \\
+\hline
+2 & Локальный бенчмаркинг STT (Local STT Testing) & Реализован интерактивный стенд. Вычислены RTF и WER для чистой и смешанной (Shala-Kazakh) казахской речи. \\
+\hline
+3 & Пайплайн обработки слов-паразитов (Filler Preprocessing) & Очищен датасет на 408 010 сэмплов. Извлечено 37 013 discourse fillers и 4 942 expressive interjections для обучения кастомных TTS моделей. \\
+\hline
+4 & Исследование Flow Matching архитектуры (TTS Flow Matching) & Изучены архитектуры F5-TTS и Tote-TTS. Построен пайплайн нормализации текста и Continuous Flow Matcher. \\
+\hline
+5 & Развертывание low-latency TTS & Интегрированы оптимизированные ONNX модели с движком Piper TTS. Достигнута задержка синтеза менее 50мс. \\
+\hline
+\end{tabularx}
+
+\vspace{1cm}
+\noindent \textbf{\large Отзыв магистранта о результативности и эффективности научной стажировки}
+
+\vspace{3mm}
+В ходе научной стажировки в ЧК «SHAI Ltd.» были изучены современные подходы к распознаванию (ASR) и синтезу речи (TTS) для казахского языка. Основное внимание было уделено исследованию устойчивости акустических моделей к разговорной речи с переключением кодов (Shala-Kazakh) и оптимизации архитектур синтеза на основе Flow Matching.
+
+В результате стажировки был реализован стенд для бенчмаркинга STT моделей, разработан робастный пайплайн очистки датасета от слов-паразитов, а также успешно развернут низколатентный движок синтеза речи на базе ONNX, обеспечивающий задержку менее 50мс. Полученные знания и практические навыки в области речевых технологий, конвейеров глубокого обучения и оптимизации вычислений являются весьма полезными для дальнейшей научно-исследовательской работы.
+
+\vspace{1.5cm}
+\noindent Магистрант \underline{\hspace{5cm}} Shaumen A. A.\\[8mm]
+Научный руководитель \underline{\hspace{5cm}} Қасабек С. А.\\[8mm]
+Руководитель базы стажировки (ответственный)\\[2mm]
+\underline{\hspace{5cm}} {\footnotesize (подпись, ФИО)}\\[8mm]
+«\underline{\hspace{1cm}}» \underline{\hspace{3cm}} 2026г.
+
+\end{document}
